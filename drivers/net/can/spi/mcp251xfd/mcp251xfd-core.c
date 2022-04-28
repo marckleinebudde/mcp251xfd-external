@@ -1787,8 +1787,13 @@ mcp251xfd_register_get_dev_id(const struct mcp251xfd_priv *priv, u32 *dev_id,
 		goto out_kfree_buf_tx;
 
 	*dev_id = be32_to_cpup((__be32 *)buf_rx->data);
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 3, 0)
+	*effective_speed_hz_slow = 0;
+	*effective_speed_hz_fast = 0;
+#else
 	*effective_speed_hz_slow = xfer[0].effective_speed_hz;
 	*effective_speed_hz_fast = xfer[1].effective_speed_hz;
+#endif
 
  out_kfree_buf_tx:
 	kfree(buf_tx);
@@ -2109,7 +2114,9 @@ static int mcp251xfd_probe(struct spi_device *spi)
 		priv->spi_max_speed_hz_fast = priv->spi_max_speed_hz_slow;
 	spi->max_speed_hz = priv->spi_max_speed_hz_slow;
 	spi->bits_per_word = 8;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 3, 0)
 	spi->rt = true;
+#endif
 	err = spi_setup(spi);
 	if (err)
 		goto out_free_candev;
@@ -2142,7 +2149,11 @@ static int mcp251xfd_probe(struct spi_device *spi)
 	return err;
 }
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 18, 0)
+static int mcp251xfd_remove(struct spi_device *spi)
+#else
 static void mcp251xfd_remove(struct spi_device *spi)
+#endif
 {
 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
 	struct net_device *ndev = priv->ndev;
@@ -2151,6 +2162,10 @@ static void mcp251xfd_remove(struct spi_device *spi)
 	mcp251xfd_unregister(priv);
 	spi->max_speed_hz = priv->spi_max_speed_hz_orig;
 	free_candev(ndev);
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 18, 0)
+	return 0;
+#endif
 }
 
 static int __maybe_unused mcp251xfd_runtime_suspend(struct device *device)

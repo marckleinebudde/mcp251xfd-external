@@ -9,6 +9,10 @@
 
 #include <compat/can/compat.h>
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
+#define len can_dlc
+#endif /* < v5.11.0 */
+
 struct can_rx_offload_cb {
 	u32 timestamp;
 };

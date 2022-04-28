@@ -93,8 +93,13 @@ mcp251xfd_ring_init_tef(struct mcp251xfd_priv *priv, u16 *base)
 		xfer->tx_buf = &tef_ring->uinc_buf;
 		xfer->len = len;
 		xfer->cs_change = 1;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)
 		xfer->cs_change_delay.value = 0;
 		xfer->cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
+#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 3, 0)
+		xfer->cs_change_delay = 0;
+		xfer->cs_change_delay_unit = SPI_DELAY_UNIT_NSECS;
+#endif
 	}
 
 	/* "cs_change == 1" on the last transfer results in an active
@@ -142,8 +147,13 @@ mcp251xfd_tx_ring_init_tx_obj(const struct mcp251xfd_priv *priv,
 	xfer->tx_buf = &tx_obj->buf;
 	xfer->len = 0;	/* actual len is assigned on the fly */
 	xfer->cs_change = 1;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)
 	xfer->cs_change_delay.value = 0;
 	xfer->cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
+#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 3, 0)
+	xfer->cs_change_delay = 0;
+	xfer->cs_change_delay_unit = SPI_DELAY_UNIT_NSECS;
+#endif
 
 	/* FIFO request to send */
 	xfer = &tx_obj->xfer[1];
@@ -226,8 +236,13 @@ mcp251xfd_ring_init_rx(struct mcp251xfd_priv *priv, u16 *base, u8 *fifo_nr)
 			xfer->tx_buf = &rx_ring->uinc_buf;
 			xfer->len = len;
 			xfer->cs_change = 1;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)
 			xfer->cs_change_delay.value = 0;
 			xfer->cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
+#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 3, 0)
+			xfer->cs_change_delay = 0;
+			xfer->cs_change_delay_unit = SPI_DELAY_UNIT_NSECS;
+#endif
 		}
 
 		/* "cs_change == 1" on the last transfer results in an
