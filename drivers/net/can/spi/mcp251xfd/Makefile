@@ -2,6 +2,8 @@
 
 obj-$(CONFIG_CAN_MCP251XFD) += mcp251xfd.o
 
+ccflags-y += -I$(src)/../../../../../include
+
 mcp251xfd-objs :=
 mcp251xfd-objs += mcp251xfd-chip-fifo.o
 mcp251xfd-objs += mcp251xfd-core.o
@@ -14,5 +16,6 @@ mcp251xfd-objs += mcp251xfd-rx.o
 mcp251xfd-objs += mcp251xfd-tef.o
 mcp251xfd-objs += mcp251xfd-timestamp.o
 mcp251xfd-objs += mcp251xfd-tx.o
+mcp251xfd-objs += ../../compat/rx-offload.o
 
 mcp251xfd-$(CONFIG_DEV_COREDUMP) += mcp251xfd-dump.o
