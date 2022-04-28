@@ -13,7 +13,6 @@
 #include <linux/bitfield.h>
 #include <linux/can/core.h>
 #include <linux/can/dev.h>
-#include <linux/can/rx-offload.h>
 #include <linux/gpio/consumer.h>
 #include <linux/kernel.h>
 #include <linux/netdevice.h>
@@ -22,6 +21,8 @@
 #include <linux/spi/spi.h>
 #include <linux/timecounter.h>
 #include <linux/workqueue.h>
+
+#include <compat/can/compat.h>
 
 /* MPC251x registers */
 

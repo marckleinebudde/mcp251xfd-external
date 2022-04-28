@@ -6,7 +6,8 @@
  */
 
 #include <linux/can/dev.h>
-#include <linux/can/rx-offload.h>
+
+#include <compat/can/compat.h>
 
 struct can_rx_offload_cb {
 	u32 timestamp;
