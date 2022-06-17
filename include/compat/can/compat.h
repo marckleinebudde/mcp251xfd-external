@@ -321,7 +321,7 @@ static inline unsigned int can_skb_get_frame_len(const struct sk_buff *skb)
 #endif /* < v5.13.0 */
 
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 18, 0) && \
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 19, 0) && \
 	LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 
 static inline int
