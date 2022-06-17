@@ -225,7 +225,7 @@ static inline int pm_runtime_resume_and_get(struct device *dev)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
 static inline u8 can_fd_dlc2len(u8 dlc)
 {
-	return can_len2dlc(dlc);
+	return can_dlc2len(dlc);
 }
 
 static inline u8 can_fd_len2dlc(u8 len)
